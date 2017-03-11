@@ -1,113 +1,37 @@
+import java.util.ArrayList;
+
 
 public class Tree {
 	private Node root;
-
-	public Tree(){
-		root=null;
-	}
-
-	public Tree(int key){
-		root = new Node(key);
-	}
-
-	public void Insert(int key){
-		root = Insert(root , key);
-	}
-
-	private Node Insert(Node focus , int key){
-		if(focus == null)
-			focus = new Node(key);
-		else
-			if(key<=focus.key)
-				focus.left= Insert(focus.left , key);
-			else
-				focus.right=Insert(focus.right ,key);
-
-		return focus;
-	}
-
+	private ArrayList<Integer> list = new ArrayList<Integer>();
 	public static void main(String[] args){
 		Tree t= new Tree();
-		t.Insert(5);
-		t.Insert(3);
-		t.Insert(9);
-		t.Insert(4);
-		t.Insert(1);
-		t.Insert(2);
-		t.Insert(8);
-		t.Insert(11);
-		t.Insert(7);
-		
-		
-		//t.Insert(4);
-		//t.delete(9);
-		t.Inorder(t.root);
-		
-		
-		
+		t.root = new Node(5);
+		t.root.left= new Node(2);
+		t.root.left.right = new Node(1);
+		t.root.right = new Node(9);
+		t.root.left.left = new Node(3);
+		t.RootToLeafSum(t.root, 0);
+		int res=0;
+		for(int i:t.list){
+			res+=i;
+		}
+		System.out.println("The required sum is " + res);
+
 	}
 
+	public void RootToLeafSum(Node focus , int sum){
+		if(focus==null)
+			return;
 
-	public void delete(int k)
-	{
-		{
-			root = delete(root, k);
-			//System.out.println(k+ " deleted from the tree");
-		}
+		sum=sum*10;
+		sum+=focus.key;
+
+		if(focus.left==null && focus.right == null){
+			list.add(sum);
+			return;
+		}		
+		RootToLeafSum(focus.left , sum);
+		RootToLeafSum(focus.right , sum);
 	}
-
-
-	private Node delete(Node root , int key){
-		if(root.key==key){
-			Node l , r , holder , p2;
-			l=root.left;
-			r=root.right;
-			if(l==null && r==null)
-				return null;
-			if(l==null){
-				//ONLY RIGHT CHILD EXISTS
-				return r;
-			}
-			else if(r==null){
-				return l;
-			}
-			else{
-				holder=r;
-
-				while(holder.left!=null)
-					holder = holder.left;
-					holder.left = l;
-					return r;
-				}
-				
-			
-
-
-		}
-
-		if(root.key>key){
-			root.left = delete(root.left , key);		
-		}
-
-		else{
-			root.right = delete(root.right , key);
-		}
-
-		return root;
-	}
-
-	public void Inorder(Node focus){
-		if(focus.left!=null)
-			Inorder(focus.left);
-		System.out.println(focus.key);
-		if(focus.right!=null)
-			Inorder(focus.right);
-	}
-
-
-
-
-
 }
-
-
