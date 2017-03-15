@@ -1,40 +1,14 @@
 
 public class Node {
-	Node left , right;
 	int key;
+	Node left;
+	Node right;
+	int level;
 	
-	
-	public Node(int key){
-		left=null;
-		right=null;
-		this.key=key;
+	Node(int key){
+		this.key = key;
+		left=right=null;
+		level=0;
 	}
-	
-	public void setRight(Node n){
-		right = n;
-	}
-	
-	public void setLeft(Node n){
-		left = n;
-	}
-	
-	public Node getLeft(){
-		return left;
-	}
-	
-	public Node getRight(){
-		return right;
-	}
-	
-	public void setKey(int key){
-		this.key=key;
-	}
-	
-	public int getKey(){
-		return key;
-	}
-	
-	
-	
-	
+
 }
