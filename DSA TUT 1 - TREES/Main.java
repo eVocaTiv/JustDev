@@ -2,12 +2,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 
 
 public class Main {
 	static Node root;
-	static ArrayList<Integer> Inorderlist = new ArrayList<>();
+	static ArrayList<Integer> Inorderlist = new ArrayList<Integer>();
+	static Scanner s = new Scanner(System.in);
 	public static void main(String[] args) {
 		root= new Node(8);
 		root.left = new Node(3);
@@ -17,9 +19,11 @@ public class Main {
 		root.left.right.right = new Node(7);
 		root.left.right.left = new Node(4);
 		root.right.right= new Node(14);
-		root .right.left = new Node(13);
+		root .right . right .left = new Node(13);
 
-		System.out.println(FindClosestAns(root ,2));
+		System.out.println("Please enter your desired number");
+		
+		System.out.println(FindClosestAns(root , s.nextInt()));
 
 	}
 
@@ -44,6 +48,7 @@ public class Main {
 				mindiff = diff;
 		}
 		if(focus.key>val){
+			//System.out.println("focus key is " + focus.key);
 			if(focus.left!=null)
 				return FindClosest(focus.left , val , diff, mindiff);
 			return mindiff;
@@ -95,7 +100,7 @@ public class Main {
 	}
 
 	public static void PLV(){
-		Queue<Node> q = new LinkedList();
+		Queue<Node> q = new LinkedList<Node>();
 		q.add(root);
 
 		root.level=0;
