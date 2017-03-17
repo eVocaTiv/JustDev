@@ -103,13 +103,17 @@ public class Main {
 
 	public static void ReadInp(){
 		for(int i=0 ; i<n ; i++){
-
-			int a=s.nextInt();
-			int b=s.nextInt();
 			post.add(0);
 			pre.add(0);
 			visited.add(0);
 			list.add(i);
+		}
+		
+		for(int i=0 ; i<e ; i++){
+
+			int a=s.nextInt();
+			int b=s.nextInt();
+			
 			adj1[a-1].add(b-1);
 			adj2[b-1].add(a-1);
 		}
