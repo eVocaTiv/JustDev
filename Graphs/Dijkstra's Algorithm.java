@@ -7,7 +7,7 @@ import java.util.Stack;
 
 public class Main {
 	private static Scanner s;
-	private static int n , e , start;
+	private static int n , e , start , t;
 	private static int clock=0;
 	private static int scc=0;
 	private static Stack<Integer> visstack ;
@@ -19,44 +19,53 @@ public class Main {
 
 
 	public static void main(String[] args){
-
-		visited = new ArrayList<Integer>();	
-		post = new ArrayList<Integer>();	
-		pre = new ArrayList<Integer>();	
-		dist=new ArrayList<Integer>();
-		prev = new ArrayList<Integer>();
-
 		s=new Scanner(System.in);	
-		n = s.nextInt();
-		e = s.nextInt();
 
-		adj1=(ArrayList<Integer>[]) new ArrayList[n];
-		cost=(ArrayList<Integer>[]) new ArrayList[n];
-		
-		//adj2=(ArrayList<Integer>[]) new ArrayList[n];
+		t=s.nextInt();
 
-		for(int i=0 ; i<n ; i++){
-			adj1[i]=new ArrayList<>();
-			cost[i]=new ArrayList<>();
-			//adj2[i]=new ArrayList<>();
+		while(t-- > 0){
+
+
+			visited = new ArrayList<Integer>();	
+			post = new ArrayList<Integer>();	
+			pre = new ArrayList<Integer>();	
+			dist=new ArrayList<Integer>();
+			prev = new ArrayList<Integer>();
+
+
+			n = s.nextInt();
+			e = s.nextInt();
+
+			adj1=(ArrayList<Integer>[]) new ArrayList[n];
+			cost=(ArrayList<Integer>[]) new ArrayList[n];
+
+			//adj2=(ArrayList<Integer>[]) new ArrayList[n];
+
+			for(int i=0 ; i<n ; i++){
+				adj1[i]=new ArrayList<>();
+				cost[i]=new ArrayList<>();
+				//adj2[i]=new ArrayList<>();
+			}
+
+
+
+
+			//INITIALIZE ARRAYLISTS.
+
+			ReadInp();
+			DFS(adj1);
+			//FindSCC();
+			//System.out.println(hasCycles);
+			Dijkstra(start);
+
+			for(int k=1 ; k<dist.size() ; k++){
+				System.out.print(dist.get(k) + " ");
+			}
 		}
-
-
-
-
-		//INITIALIZE ARRAYLISTS.
-
-		ReadInp();
-		DFS(adj1);
-		//FindSCC();
-		//System.out.println(hasCycles);
-		Dijkstra(start);
-		
-		for(int distnodes : dist){
-			System.out.println(distnodes);
-		}
-
 	}
+
+
+
 
 
 	public static void Dijkstra(int S){
@@ -70,7 +79,7 @@ public class Main {
 
 		for(int i=0 ; i<n ; i++){
 			dist.add(Integer.MAX_VALUE);
-		//	prev.add(-1);
+			//	prev.add(-1);
 		}
 
 
@@ -83,8 +92,8 @@ public class Main {
 				if(dist.get(a)<dist.get(b))
 					return -1;
 				return 0;
-				
-				
+
+
 			}
 		});
 		for(int i=0 ; i<n ; i++)
@@ -100,12 +109,12 @@ public class Main {
 				int w=adj1[nodemin].get(i);
 				if(dist.get(w) > dist.get(nodemin) + cost[nodemin].get(i)){
 					dist.set(w , dist.get(nodemin) + cost[nodemin].get(i));
+					// RESETS PRIORITY ORDER OF W ( O(LOGN))
+					pq.remove(w);
+					pq.add(w);
 				}
 			}
-
-
 		}
-
 	}
 
 
@@ -119,8 +128,8 @@ public class Main {
 
 	public static void Explore(int i , ArrayList<Integer>[] adj){
 		visited.set(i,1);
-		;
 		pre.set(i,clock++);
+
 		for(int w : adj[i]){
 			if(visited.get(w)==0)
 				Explore(w , adj);
@@ -145,7 +154,10 @@ public class Main {
 			int c=s.nextInt();
 
 			adj1[a-1].add(b-1);
+			adj1[b-1].add(a-1);
 			cost[a-1].add(c);
+			cost[b-1].add(c);
+
 			//	adj2[b-1].add(a-1);
 
 		}
