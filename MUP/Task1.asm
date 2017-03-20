@@ -3,6 +3,7 @@
 fname db 'det.txt' , 0
 handle dw ?
 sid db 'a' , 'b' , 'c'
+line db 0dh , 0ah
 id db 3 dup(?)
 .CODE
 .STARTUP
@@ -18,6 +19,7 @@ id db 3 dup(?)
 	;INPUT 3 LENGTH ID FROM USER
 	mov cx , 3
 	lea si , id
+
 sto:
 
 	mov ah , 08h
@@ -34,11 +36,27 @@ sto:
 	lea dx , id
 	int 21h
 	
+	;ADD NEXTLINE TO FILE
+	mov ah , 40h
+	mov bx , handle
+	mov cx , 2
+	lea dx , line
+	int 21h
+		
+	;WRITE ID TO FILE AGAIN.	
+	mov ah , 40h
+	mov bx , handle
+	mov cx , 3
+	lea dx , id
+	int 21h
+	
 	;CLOSE FILE
 
 	mov ah , 3eh
 	mov bx , handle
 	int 21h
+	
+		
 	
 
 .EXIT
