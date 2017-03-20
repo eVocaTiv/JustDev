@@ -2,6 +2,7 @@
 .DATA
 fname db 'det.txt' , 0
 handle dw ?
+sid db 'a' , 'b' , 'c'
 id db 3 dup(?)
 .CODE
 .STARTUP
@@ -14,14 +15,15 @@ id db 3 dup(?)
 	int 21h
 	mov handle , ax
 	
-	;INPUT ID FROM USER
+	;INPUT 3 LENGTH ID FROM USER
 	mov cx , 3
-	
+	lea si , id
 sto:
 
 	mov ah , 08h
 	int 21h
-	mov [id], al
+	mov [si], al
+	inc si
 	dec cx
 	jnz sto		
 	
