@@ -1,22 +1,28 @@
 
 public class AVLTree {
-	static Node root;
+	Node root;
+
 
 
 	public static void main(String[] args){
 		AVLTree tree = new AVLTree();
+		AVLTree tree2= new AVLTree();
+		tree2.root = tree2.Insert(tree2.root , 10);
+		tree2.root = tree2.Insert(tree2.root , 20);
+		tree2.root = tree2.Insert(tree2.root , 30);
+			tree2.root = tree2.Insert(tree2.root , 40);
+		tree2.root = tree2.Insert(tree2.root , 50);
+		tree2.root = tree2.Insert(tree2.root,  25);
 
-		tree.root = tree.Insert(tree.root, 70);
-		tree.root = tree.Insert(tree.root, 1);
-		tree.root = tree.Insert(tree.root , 0);
+		//System.out.println(tree2.root.right.left.key);
+		System.out.println(tree2.root.key);
+		System.out.println(tree2.root.height);
 		
-		
-		System.out.println("Total number of nodes : " + tree.Nodes(tree.root));
-		System.out.println("Height of the tree is " + tree.root.height);
-		System.out.println("Root key is " +tree.root.key);
+		//	Node newroot = tree.MergeStart(tree.root, tree2.root);
+		//	System.out.println("New Tree's height is " + newroot.height);
 	}
-	
-	
+
+
 	// GET NUMBER OF  NODES IN A TREE.
 	public int Nodes(Node focus){
 		if(focus==null)
@@ -26,11 +32,11 @@ public class AVLTree {
 
 	//ROTATE LEFT
 	public Node RL(Node pivot){
-		
+
 		//INITIALIZE
 		Node x  = pivot.right;
 		Node T2 = x.left;
-		
+
 		//ROTATE
 
 		pivot.right = T2;
@@ -39,18 +45,18 @@ public class AVLTree {
 		//UPDATE HEIGHTS.
 		ModifyHeight(pivot);
 		ModifyHeight(x);
-		
+
 		// SET NEW PIVOT AS X (PROMOTED)
 		return x;			
 	}
 
 	//ROTATE RIGHT
 	public Node RR(Node pivot){
-		
+
 		//INITIALIZE
 		Node x  = pivot.left;
 		Node T2 = x.right;
-		
+
 		//ROTATE
 		pivot.left = T2;
 		x.right = pivot;
@@ -59,22 +65,55 @@ public class AVLTree {
 		//UPDATE HEIGHTS
 		ModifyHeight(pivot);
 		ModifyHeight(x);
-		
+
 		// SET NEW PIVOT AS X (PROMOTED)
 		return x;			
 	}
-	
+
+	//TAKE OUT MAX VALUE FROM AN AVL TREE.
+	public Node GetMax(Node focus){
+		Node root = focus;
+		while(focus.right!=null)
+			focus = focus.right;
+		//STORE MAX VALUE IN A TEMP VARIABLE.
+		Node temp = focus;
+
+		//DELETE THE MAX VALUE.
+		root = Delete(root , focus.key);
+
+		//RETURN THE VALUE REMOVED.
+		return temp;
+	}
+
+	//MERGE 2 TREES GIVEN A ROOT
+	public Node Merge(Node t1 , Node t2 , Node newroot){
+		newroot.left = t1;
+		newroot.right = t2;
+
+		ModifyHeight(newroot);
+
+		return root;
+	}
+
+	public Node MergeStart(Node t1, Node t2){
+
+		Node newroot = GetMax(t1);
+		Merge(t1 , t2 , newroot);
+
+		return newroot;
+	}
+
 	public void ModifyHeight(Node focus){
 		if(focus==null)
 			return ;
 		else
 			focus.height = 1+UpdateHeight(focus.left , focus.right);
-		
+
 	}
 
 
 	public int UpdateHeight(Node a , Node b){
-		
+
 		if(a==null && b==null)
 			return -1;
 		if(a==null)
@@ -82,19 +121,19 @@ public class AVLTree {
 		if(b==null)
 			return a.height;
 		return Math.max(a.height, b.height);
-	
+
 	}
 
-	
+
 
 
 	public Node Insert(Node focus , int x){
 
 		if(focus==null)
 			return(new Node(x));
-		else
+		else{
 			if(focus.key > x){
-			//	System.out.println(true);
+				//	System.out.println(true);
 				focus.left = Insert(focus.left , x);
 			}
 			else
@@ -103,7 +142,8 @@ public class AVLTree {
 				}
 				else
 					return focus;
-		
+		}
+		//System.out.println(focus.key);
 		return DoBalance(focus , x);
 
 	}
@@ -116,10 +156,11 @@ public class AVLTree {
 		if(N.left==null && N.right==null)
 			return 0;
 		if(N.left == null)
-			return N.right.height;
+			return -1*N.right.height;
 		if(N.right==null)
 			return N.left.height;
 
+		
 		return N.left.height - N.right.height;
 	}
 
@@ -132,6 +173,55 @@ public class AVLTree {
 		if(focus.right!=null)
 			Inorder(focus.right);
 
+	}
+
+
+	public Node DoBalance (Node focus , int key){
+		
+		ModifyHeight(focus);
+	//	System.out.println("Modified height at key " + focus.key + " is " + focus.height);
+//
+		int balance = getBalance(focus);
+
+		// NOW WE CAN HAVE 4 CASES OF IMBALANCE OR BALANCED.
+
+		//CASE1 ( LEFT LEFT ) 
+		if((balance)>1){
+			//System.out.println("left height is " + focus.left.height);
+		//	System.out.println("Imbalance" + focus.key);
+		}
+		
+
+		if(balance > 1 && focus.left!=null && key < focus.left.key){
+			//.out.println("LEFT LEFT");
+			return RR(focus);
+		}
+
+
+		//CASE2 ( LEFT RIGHT) 
+
+		if(balance > 1 &&  focus.left!=null && key > focus.left.key){
+			//System.out.println("LEFT RIGHT");
+			focus.left = RL(focus.left);
+			return RR(focus);
+		}
+
+		//CASE3 ( RIGHT RIGHT ) 
+		
+		if(balance < -1 && focus.right!=null && key > focus.right.key){
+			//System.out.println("RIGHT RIGHT");
+			return RL(focus);
+		}
+
+		//CASE4 ( RIGHT LEFT ) 
+
+		if(balance < -1 && focus.right!=null && key < focus.right.key){
+			//System.out.println("RIGHT LEFT");
+			focus.right = RR(focus.right);
+			return RL(focus);
+		}
+
+		return focus;
 	}
 
 	public Node Delete(Node focus , int key){
@@ -179,45 +269,6 @@ public class AVLTree {
 		// BALANCED CASE
 
 
-	}
-
-
-	public Node DoBalance (Node focus , int key){
-		
-		ModifyHeight(focus);
-		
-		int balance = getBalance(focus);
-		
-		// NOW WE CAN HAVE 4 CASES OF IMBALANCE OR BALANCED.
-
-		//CASE1 ( LEFT LEFT ) 
-		
-		if(balance > 1 && key < focus.left.key){
-			return RR(focus);
-		}
-
-
-		//CASE2 ( LEFT RIGHT) 
-
-		if(balance > 1 && key > focus.left.key){
-			focus.left = RL(focus.left);
-			return RR(focus);
-		}
-
-		//CASE3 ( RIGHT RIGHT ) 
-
-		if(balance < -1 && key > focus.left.key){
-			return RL(focus);
-		}
-
-		//CASE4 ( RIGHT LEFT ) 
-
-		if(balance < -1 && key < focus.left.key){
-			focus.right = RR(focus.right);
-			return RL(focus);
-		}
-
-		return focus;
 	}
 
 
