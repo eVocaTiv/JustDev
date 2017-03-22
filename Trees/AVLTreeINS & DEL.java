@@ -183,8 +183,9 @@ public class AVLTree {
 
 
 	public Node DoBalance (Node focus , int key){
-		focus.height = 1+ UpdateHeight(focus.left, focus.right);
-
+		
+		ModifyHeight(focus);
+		
 		int balance = getBalance(focus);
 		
 		// NOW WE CAN HAVE 4 CASES OF IMBALANCE OR BALANCED.
