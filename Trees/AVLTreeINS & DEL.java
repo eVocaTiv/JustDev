@@ -4,20 +4,38 @@ public class AVLTree {
 
 
 
+	public class Node {
+		int key, height;
+		Node left , right;
+
+		public Node(int key){
+			this.key = key;
+
+			//IMPORTANT , SET INITIAL HEIGHT = 1 , if 0 , code bugs off.
+			height = 1;
+			left = right = null;
+		}
+
+	}
+
+
+
 	public static void main(String[] args){
-		AVLTree tree = new AVLTree();
+//		AVLTree tree = new AVLTree();
 		AVLTree tree2= new AVLTree();
-		tree2.root = tree2.Insert(tree2.root , 10);
-		tree2.root = tree2.Insert(tree2.root , 20);
-		tree2.root = tree2.Insert(tree2.root , 30);
-			tree2.root = tree2.Insert(tree2.root , 40);
-		tree2.root = tree2.Insert(tree2.root , 50);
-		tree2.root = tree2.Insert(tree2.root,  25);
+
+		tree2.root = tree2.Insert(tree2.root, 10);
+		tree2.root = tree2.Insert(tree2.root, 20);
+		tree2.root = tree2.Insert(tree2.root, 30);
+		tree2.root = tree2.Insert(tree2.root, 40);
+		tree2.root = tree2.Insert(tree2.root, 50);
+		tree2.root = tree2.Insert(tree2.root, 60);
+
 
 		//System.out.println(tree2.root.right.left.key);
 		System.out.println(tree2.root.key);
 		System.out.println(tree2.root.height);
-		
+
 		//	Node newroot = tree.MergeStart(tree.root, tree2.root);
 		//	System.out.println("New Tree's height is " + newroot.height);
 	}
@@ -115,7 +133,7 @@ public class AVLTree {
 	public int UpdateHeight(Node a , Node b){
 
 		if(a==null && b==null)
-			return -1;
+			return 0;
 		if(a==null)
 			return b.height;
 		if(b==null)
@@ -160,7 +178,7 @@ public class AVLTree {
 		if(N.right==null)
 			return N.left.height;
 
-		
+
 		return N.left.height - N.right.height;
 	}
 
@@ -177,10 +195,10 @@ public class AVLTree {
 
 
 	public Node DoBalance (Node focus , int key){
-		
+
 		ModifyHeight(focus);
-	//	System.out.println("Modified height at key " + focus.key + " is " + focus.height);
-//
+		//	System.out.println("Modified height at key " + focus.key + " is " + focus.height);
+		//
 		int balance = getBalance(focus);
 
 		// NOW WE CAN HAVE 4 CASES OF IMBALANCE OR BALANCED.
@@ -188,12 +206,12 @@ public class AVLTree {
 		//CASE1 ( LEFT LEFT ) 
 		if((balance)>1){
 			//System.out.println("left height is " + focus.left.height);
-		//	System.out.println("Imbalance" + focus.key);
+			//System.out.println("Imbalance" + focus.key);
 		}
-		
+
 
 		if(balance > 1 && focus.left!=null && key < focus.left.key){
-			//.out.println("LEFT LEFT");
+			//System.out.println("LEFT LEFT");
 			return RR(focus);
 		}
 
@@ -207,7 +225,7 @@ public class AVLTree {
 		}
 
 		//CASE3 ( RIGHT RIGHT ) 
-		
+
 		if(balance < -1 && focus.right!=null && key > focus.right.key){
 			//System.out.println("RIGHT RIGHT");
 			return RL(focus);
