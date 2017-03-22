@@ -16,52 +16,65 @@ public class AVLTree {
 		System.out.println("Root key is " +tree.root.key);
 	}
 	
+	
+	// GET NUMBER OF  NODES IN A TREE.
 	public int Nodes(Node focus){
 		if(focus==null)
 			return 0;
 		return 1+Nodes(focus.left)+Nodes(focus.right);
 	}
 
-
+	//ROTATE LEFT
 	public Node RL(Node pivot){
+		
 		//INITIALIZE
 		Node x  = pivot.right;
 		Node T2 = x.left;
+		
 		//ROTATE
 
 		pivot.right = T2;
 		x.left = pivot;
 
 		//UPDATE HEIGHTS.
-
-		pivot.height = 1+ UpdateHeight(pivot.left , pivot.right);
-		x.height = 1+ UpdateHeight(x.left , x.right);
-
+		ModifyHeight(pivot);
+		ModifyHeight(x);
+		
 		// SET NEW PIVOT AS X (PROMOTED)
 		return x;			
 	}
 
+	//ROTATE RIGHT
 	public Node RR(Node pivot){
+		
 		//INITIALIZE
 		Node x  = pivot.left;
 		Node T2 = x.right;
+		
 		//ROTATE
-
 		pivot.left = T2;
 		x.right = pivot;
 
 
 		//UPDATE HEIGHTS
-
-		pivot.height = 1+ UpdateHeight(pivot.left , pivot.right);
-		x.height =1+ UpdateHeight(x.left , x.right);
-
+		ModifyHeight(pivot);
+		ModifyHeight(x);
+		
 		// SET NEW PIVOT AS X (PROMOTED)
 		return x;			
+	}
+	
+	public void ModifyHeight(Node focus){
+		if(focus==null)
+			return ;
+		else
+			focus.height = 1+UpdateHeight(focus.left , focus.right);
+		
 	}
 
 
 	public int UpdateHeight(Node a , Node b){
+		
 		if(a==null && b==null)
 			return -1;
 		if(a==null)
@@ -69,7 +82,10 @@ public class AVLTree {
 		if(b==null)
 			return a.height;
 		return Math.max(a.height, b.height);
+	
 	}
+
+	
 
 
 	public Node Insert(Node focus , int x){
