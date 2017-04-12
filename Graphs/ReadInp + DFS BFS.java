@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 
@@ -12,9 +14,9 @@ public class Main {
 
 	public static void main(String[] args){
 		ReadInp();
-		Explore(0 , adj1);
-		
-		for(int i : visited){
+		BFS(1);
+
+		for(int i : dist){
 			System.out.println(i);
 		}
 	}
@@ -23,15 +25,40 @@ public class Main {
 	public static void Explore(int v , ArrayList<Integer>[] adj){
 		visited.set(v , 1);
 		pre.set(v, clock++);
-		
+
 		for(int w: adj[v]){
 			if(visited.get(w)==0)
 				Explore(w , adj);
 		}
-		
+
 		post.set(v , clock++);
 	}
 
+
+	public static void BFS(int start){
+		int mystart=start-1;
+		Queue<Integer> q = new LinkedList();
+		q.add(mystart);
+		dist.set(mystart, 0);
+
+		while(!q.isEmpty()){
+			int top = q.poll();
+			visited.set(top , 1);
+			for(int w : adj1[top]){
+				if(visited.get(w)==0){
+					dist.set(w , dist.get(top)+1);
+					q.add(w);
+				}
+			}
+		}
+
+	}
+
+	public static void DFS(){
+		for(int i=0 ; i<n ; i++)
+			if(visited.get(i)==0)
+				Explore(i , adj1);
+	}
 
 	public static void ReadInp(){
 		n = s.nextInt();
@@ -59,6 +86,7 @@ public class Main {
 			post.add(0);
 			pre.add(0);
 			prev.add(-1);
+			dist.add(Integer.MAX_VALUE);
 
 		}
 
@@ -68,18 +96,17 @@ public class Main {
 			// c=s.nextInt();
 
 			// UNDIRECTED GRAPH TAKEN.
-			
+
 			adj1[a-1].add(b-1);
 			adj1[b-1].add(a-1);
-			
-			
-			
+
+
+
 			//adj2[b-1].add(a-1);
 			//cost[a-1].add(c);
 			//cost[b-1].add(c);
 
 		}
-
 	}
 
 }
