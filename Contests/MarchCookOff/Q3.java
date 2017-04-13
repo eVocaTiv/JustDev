@@ -73,9 +73,10 @@ public class Main {
 		for(int w : adj[v]){
 			if(visited.get(w)==0)
 				Explore(w);
-			PostVisit(v);
+			
 
 		}
+		PostVisit(v);
 	}
 
 
