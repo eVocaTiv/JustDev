@@ -99,7 +99,7 @@ public class Main {
 			// UNDIRECTED GRAPH TAKEN.
 
 			adj1[a-1].add(b-1);
-			
+			adj1[b-1].add(a-1);
 
 
 
