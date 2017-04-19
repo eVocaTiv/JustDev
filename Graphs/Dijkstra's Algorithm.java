@@ -2,90 +2,35 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Scanner;
-import java.util.Stack;
 
 
 public class Main {
-	private static Scanner s;
-	private static int n , e , start , t;
-	private static int clock=0;
-	private static int scc=0;
-	private static Stack<Integer> visstack ;
-	private static boolean hasCycles=false;
-	//adj1 STORES G AND adj2 STORES G'.
-
+	private static ArrayList<Integer>  pre , post , dist , prev;
 	private static ArrayList<Integer>[] adj1 , adj2 , cost;
-	private static ArrayList<Integer> visited , pre , post , dist , prev;
-
+	private static ArrayList<Integer> visited;
+	private static PriorityQueue<Integer> q;
+	private static int n , e;
+	private static int clock = 0;
+	private static Scanner s  = new Scanner(System.in);
 
 	public static void main(String[] args){
-		s=new Scanner(System.in);	
-
-		t=s.nextInt();
-
-		while(t-- > 0){
+		ReadInp();
+		DFS();
+		Dijkstra(1);
 
 
-			visited = new ArrayList<Integer>();	
-			post = new ArrayList<Integer>();	
-			pre = new ArrayList<Integer>();	
-			dist=new ArrayList<Integer>();
-			prev = new ArrayList<Integer>();
-
-
-			n = s.nextInt();
-			e = s.nextInt();
-
-			adj1=(ArrayList<Integer>[]) new ArrayList[n];
-			cost=(ArrayList<Integer>[]) new ArrayList[n];
-
-			//adj2=(ArrayList<Integer>[]) new ArrayList[n];
-
-			for(int i=0 ; i<n ; i++){
-				adj1[i]=new ArrayList<>();
-				cost[i]=new ArrayList<>();
-				//adj2[i]=new ArrayList<>();
-			}
-
-
-
-
-			//INITIALIZE ARRAYLISTS.
-
-			ReadInp();
-			DFS(adj1);
-			//FindSCC();
-			//System.out.println(hasCycles);
-			Dijkstra(start);
-
-			for(int k=1 ; k<dist.size() ; k++){
-				System.out.print(dist.get(k) + " ");
-			}
+		for(int i : dist){
+			System.out.println(i);
 		}
 	}
 
+	public static void Dijkstra(int Start){
 
+		//INITIALLT ONLY START VERTEX IN COVERED REGION.
+		int mystart = Start-1;
+		dist.set(mystart , 0);
 
-
-
-	public static void Dijkstra(int S){
-
-		// WE MAINTAIN A REGION R OF VERTICES FOR WHICH THE SHORTEST ROUTE IS ALREADY KNOWN TO US.
-		// THE FIRST ELEMENT ADDED TO R IS THE VERTEX S ( ROOT ).
-
-		// ON EACH ITERATION WE TAKE A VERTEX OUTSIDE R HAVING MIN DIST. VALUE , ADD IT TO R AND RELAX ALL IT'S OUTGOING EDGES.
-
-
-
-		for(int i=0 ; i<n ; i++){
-			dist.add(Integer.MAX_VALUE);
-			//	prev.add(-1);
-		}
-
-
-		dist.set(S-1 , 0);
-
-		PriorityQueue<Integer> pq = new PriorityQueue<>(10 , new Comparator<Integer>(){
+		q = new PriorityQueue<>(10 , new Comparator<Integer>(){
 			public int compare(Integer a , Integer b){
 				if(dist.get(a)>dist.get(b))
 					return 1;
@@ -93,77 +38,103 @@ public class Main {
 					return -1;
 				return 0;
 
-
 			}
 		});
+
 		for(int i=0 ; i<n ; i++)
-			pq.add(i);
+			q.add(i);
 
-		while(!pq.isEmpty()){
-			int nodemin = pq.poll();
+		while(!q.isEmpty()){
+			int next = q.poll();
+
+			Relax(next);
+		}
 
 
-			//RELAX METHOD.
 
-			for(int i=0 ; i<adj1[nodemin].size() ; i++){
-				int w=adj1[nodemin].get(i);
-				if(dist.get(w) > dist.get(nodemin) + cost[nodemin].get(i)){
-					dist.set(w , dist.get(nodemin) + cost[nodemin].get(i));
-					// RESETS PRIORITY ORDER OF W ( O(LOGN))
-					pq.remove(w);
-					pq.add(w);
-				}
+	}
+
+	public static void Relax(int next){
+
+		for(int i=0 ; i<adj1[next].size() ; i++){
+			
+			int w = adj1[next].get(i);
+			if(dist.get(w)>dist.get(next)+ cost[next].get(i)){
+				dist.set(w , dist.get(next) +cost[next].get(i));
+				q.remove(w);
+				q.add(w);
 			}
 		}
+
 	}
 
 
-	public static void DFS(ArrayList<Integer>[] adj){
-		for(int i=0 ; i<n ; i++){
-			if(visited.get(i)==0){
-				Explore(i , adj);
-			}
-		}
-	}
+	public static void Explore(int v , ArrayList<Integer>[] adj){
+		visited.set(v , 1);
+		pre.set(v, clock++);
 
-	public static void Explore(int i , ArrayList<Integer>[] adj){
-		visited.set(i,1);
-		pre.set(i,clock++);
-
-		for(int w : adj[i]){
+		for(int w: adj[v]){
 			if(visited.get(w)==0)
 				Explore(w , adj);
 		}
 
-		post.set(i,clock++);
+		post.set(v , clock++);
+	}
+
+
+	public static void DFS(){
+		for(int i=0 ; i<n ; i++)
+			if(visited.get(i)==0)
+				Explore(i , adj1);
 	}
 
 	public static void ReadInp(){
+		n = s.nextInt();
+		e = s.nextInt();
+		int a , b , c;
+
+		// INITIALIZE ARRAYLISTS.
+		visited = new ArrayList<>();
+		pre = new ArrayList<>();
+		post  = new ArrayList<>();
+		prev  = new ArrayList<>();
+		dist  = new ArrayList<>();
+
+		adj1 = (ArrayList<Integer>[])new ArrayList[n];
+		adj2 = (ArrayList<Integer>[])new ArrayList[n];
+		cost = (ArrayList<Integer>[])new ArrayList[n];
+
 		for(int i=0 ; i<n ; i++){
+			adj1[i]= new ArrayList<Integer>();
+			adj2[i]= new ArrayList<Integer>();
+			cost[i]= new ArrayList<Integer>();
+
+			//FILL 0 VALUES.
+			visited.add(0);
 			post.add(0);
 			pre.add(0);
-			visited.add(0);
+			prev.add(-1);
+			dist.add(Integer.MAX_VALUE);
 
 		}
 
-
 		for(int i=0 ; i<e ; i++){
+			a=s.nextInt();
+			b=s.nextInt();
+			c=s.nextInt();
 
-			int a=s.nextInt();
-			int b=s.nextInt();
-			int c=s.nextInt();
+			// UNDIRECTED GRAPH TAKEN.
 
 			adj1[a-1].add(b-1);
 			adj1[b-1].add(a-1);
+
+
+
+			//adj2[b-1].add(a-1);
 			cost[a-1].add(c);
 			cost[b-1].add(c);
 
-			//	adj2[b-1].add(a-1);
-
 		}
-		start=s.nextInt();
 	}
-
-
 
 }
