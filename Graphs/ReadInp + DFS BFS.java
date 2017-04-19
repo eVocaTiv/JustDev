@@ -41,12 +41,13 @@ public class Main {
 		q.add(mystart);
 		dist.set(mystart, 0);
 
+		visited.set(mystart , 1);
 		while(!q.isEmpty()){
 			int top = q.poll();
-			visited.set(top , 1);
 			for(int w : adj1[top]){
 				if(visited.get(w)==0){
 					dist.set(w , dist.get(top)+1);
+					visited.set(w,1);
 					q.add(w);
 				}
 			}
@@ -98,7 +99,7 @@ public class Main {
 			// UNDIRECTED GRAPH TAKEN.
 
 			adj1[a-1].add(b-1);
-			adj1[b-1].add(a-1);
+			
 
 
 
