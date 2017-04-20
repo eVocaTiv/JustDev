@@ -8,20 +8,19 @@ public class Main {
 	private static ArrayList<Integer>  pre , post , dist , prev;
 	private static ArrayList<Integer>[] adj1 , adj2 , cost;
 	private static ArrayList<Integer> visited;
+	private static ArrayList<Integer> edges;
 	private static PriorityQueue<Integer> q;
-	private static int n , e;
+	private static int n , e , start , end;
 	private static int clock = 0;
 	private static Scanner s  = new Scanner(System.in);
 
 	public static void main(String[] args){
 		ReadInp();
-		DFS();
-		Dijkstra(1);
-
-
-		for(int i : dist){
-			System.out.println(i);
-		}
+		//DFS();
+		Dijkstra(start);
+		int d = dist.get(end-1);
+		System.out.print(d==Integer.MAX_VALUE ? -1 : d);
+		System.out.print(" " + edges.get(end-1));
 	}
 
 	public static void Dijkstra(int Start){
@@ -29,6 +28,7 @@ public class Main {
 		//INITIALLT ONLY START VERTEX IN COVERED REGION.
 		int mystart = Start-1;
 		dist.set(mystart , 0);
+		edges.set(mystart,0);
 
 		q = new PriorityQueue<>(10 , new Comparator<Integer>(){
 			public int compare(Integer a , Integer b){
@@ -41,29 +41,56 @@ public class Main {
 			}
 		});
 
-		for(int i=0 ; i<n ; i++)
+		for(int i=0 ; i<n ; i++){
 			q.add(i);
+		}
+		//System.out.println(q.size());
 
 		while(!q.isEmpty()){
 			int next = q.poll();
-
+			int val = next + 1;
 			Relax(next);
+
+			//System.out.println("The distance array is with value as " + val + " is ");
+			//	for(int x : dist)
+			//	System.out.print (x + " ");
+			//	System.out.println();
+			//	System.out.println("queue size left is "+ q.size());
+
 		}
 
 
 
-	}
 
+	}
+	// CHANGES ADDED
+	// 1. Q.CONTAINS(W) IN IF STATEMENT ( TO CHECK IF THE NEIGHBOUR IS IN UNDISCOVERED AREA OR NOT
+	//  , ONLY THEN UPDATE THE DISTANCE FOR IT.
+	// 2. NEW IF CONDITION ( IF (DIST.GET(NEXT)!=INTEGER.MAX_VALUE ) . ONLY THEN UPDATE NEIGBOUR'S DISTANCE AS
+	// DIST.GET(NEXT) + COST , ELSE LEAVE IT TO + INFINITY.
+	// FIXED ERROR AS + INFINITY + COST ( 1 ) WAS GIVING -INFINITY!!
 	public static void Relax(int next){
 
 		for(int i=0 ; i<adj1[next].size() ; i++){
-			
+
+			//RELAX ALL NEIGHBOURS.
 			int w = adj1[next].get(i);
-			if(dist.get(w)>dist.get(next)+ cost[next].get(i)){
-				dist.set(w , dist.get(next) +cost[next].get(i));
-				q.remove(w);
-				q.add(w);
+			if(q.contains(w) && dist.get(w)>dist.get(next)+ cost[next].get(i)){
+				if(dist.get(next)!=Integer.MAX_VALUE){
+					dist.set(w , dist.get(next) + cost[next].get(i));
+					edges.set(w,edges.get(next)+1);
+					q.remove(w);
+					q.add(w);
+				}
 			}
+			else
+				if(q.contains(w) && dist.get(w)==dist.get(next)+ cost[next].get(i)){
+					if(dist.get(next)!=Integer.MAX_VALUE && edges.get(w)> edges.get(next) + 1)
+						edges.set(w,edges.get(next)+ 1);
+					q.remove(w);
+					q.add(w);
+				}
+
 		}
 
 	}
@@ -99,6 +126,7 @@ public class Main {
 		post  = new ArrayList<>();
 		prev  = new ArrayList<>();
 		dist  = new ArrayList<>();
+		edges = new ArrayList<>();
 
 		adj1 = (ArrayList<Integer>[])new ArrayList[n];
 		adj2 = (ArrayList<Integer>[])new ArrayList[n];
@@ -115,6 +143,7 @@ public class Main {
 			pre.add(0);
 			prev.add(-1);
 			dist.add(Integer.MAX_VALUE);
+			edges.add(-1);
 
 		}
 
@@ -126,15 +155,15 @@ public class Main {
 			// UNDIRECTED GRAPH TAKEN.
 
 			adj1[a-1].add(b-1);
-			adj1[b-1].add(a-1);
 
 
 
 			//adj2[b-1].add(a-1);
 			cost[a-1].add(c);
-			cost[b-1].add(c);
 
 		}
+		start = s.nextInt();
+		end = s.nextInt();
 	}
 
 }
