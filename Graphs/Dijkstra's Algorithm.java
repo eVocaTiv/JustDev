@@ -15,12 +15,21 @@ public class Main {
 	private static Scanner s  = new Scanner(System.in);
 
 	public static void main(String[] args){
-		ReadInp();
-		//DFS();
-		Dijkstra(start);
-		int d = dist.get(end-1);
-		System.out.print(d==Integer.MAX_VALUE ? -1 : d);
-		System.out.print(" " + edges.get(end-1));
+	{
+			ReadInp();
+			//DFS();
+			Dijkstra(start);
+			
+			
+		
+	
+			for(int i = 0 ; i<dist.size() ; i++)
+				if(i!=start-1){
+					int d = dist.get(i);
+					System.out.print(d==Integer.MAX_VALUE ? -1 + " " : d + " ");
+				}
+			System.out.println();
+		} 
 	}
 
 	public static void Dijkstra(int Start){
@@ -155,15 +164,17 @@ public class Main {
 			// UNDIRECTED GRAPH TAKEN.
 
 			adj1[a-1].add(b-1);
-
+			adj1[b-1].add(a-1);
+			
 
 
 			//adj2[b-1].add(a-1);
 			cost[a-1].add(c);
+			cost[b-1].add(c);
 
 		}
 		start = s.nextInt();
-		end = s.nextInt();
+		//end = s.nextInt();
 	}
 
 }
