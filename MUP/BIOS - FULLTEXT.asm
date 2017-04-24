@@ -1,16 +1,20 @@
 .model tiny
 .DATA
-fname db 'det.txt' , 0
+fname db 'x.txt' , 0
 nfname db 'avinash.txt' , 0
 STR1 DB 'HELLO'
 handle dw ?
 sid db 'a' , 'b' , 'c'
 line db 0dh , 0ah
 id db 3 dup(?)
-RCNT DB 028H
+RCNT DB 0019H
 CNT DW 0050H
+RES db 5 dup(?)
+K1 DB ?
+K2 DB ?
 .CODE
 .STARTUP
+
 
 	;SET GRAPHICS DISPLAY MODE
 	MOV AH , 00H
@@ -40,7 +44,7 @@ START:
 	INT 10H
 
 ;WRITE CHAR AT CURSOR POSITION
-
+	LEA SI , RES
 	MOV AH , 09H
 	MOV AL , 'A'
 	MOV BH , 00H
