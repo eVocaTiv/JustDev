@@ -1,0 +1,60 @@
+.model tiny
+.DATA
+fname db 'det.txt' , 0
+nfname db 'avinash.txt' , 0
+STR1 DB 'HELLO'
+handle dw ?
+sid db 'a' , 'b' , 'c'
+line db 0dh , 0ah
+id db 3 dup(?)
+CNT DB 05H
+.CODE
+.STARTUP
+
+	;LOAD DI WITH STRING ADDRESS
+	LEA DI , STR1
+	
+	;SET DISPLAY MODE
+	MOV AH , 00H
+	MOV AL , 03H
+	INT 10H
+	
+	;INITIALIZE CURSOR POSTION
+	MOV DH , 10
+	MOV DL , 30
+	
+
+GO:	;SET CURSOR POSITION
+	MOV AH , 02H
+	INC DL
+	MOV BH , 00H
+	INT 10H
+	
+	;WRITE CHAR AT CURSOR POSITION
+
+	MOV AH , 09H
+	MOV AL , [DI]
+	MOV BH , 00H
+	MOV BL , 10001001B
+	MOV CX , 01H
+	INT 10H
+	
+	;LOOP FOR NEXT CHAR BY INC DI.
+	INC DI
+	DEC CNT
+	JNZ GO
+	
+	
+	;BLOCKING FUNCTION WITH %
+	MOV AH , 07H
+BLOCK:
+	INT 21H
+	CMP AL , '%'
+	JNZ BLOCK
+
+	
+	
+	
+
+.EXIT
+END
