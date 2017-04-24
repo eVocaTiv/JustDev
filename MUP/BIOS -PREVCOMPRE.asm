@@ -20,11 +20,13 @@ TEMP DB ?
 	LEA SI , K1
 	MOV AH , 01H
 	INT 21H
+	AND AL , 0FH
 	MOV [SI] , AL
 	
 	LEA SI , K2
 	MOV AH , 01H
 	INT 21H
+	AND AL , 0FH
 	MOV [SI] , AL
 	
 	
@@ -35,7 +37,7 @@ TEMP DB ?
 	ROL AH , CL
 	; NOW AH HAS 50H
 	OR AH , AL
-	;OR AH , 88H
+	;OR AH , 08H
 	MOV TEMP , AH
 	
 	
