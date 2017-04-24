@@ -1,0 +1,122 @@
+.model tiny
+.DATA
+fname db 'x.txt' , 0
+nfname db 'avinash.txt' , 0
+STR1 DB 'HELLO'
+handle dw ?
+sid db 'a' , 'b' , 'c'
+line db 0dh , 0ah
+id db 3 dup(?)
+RCNT DB 0019H
+CNT DW 0050H
+RES db 5 dup(?)
+K1 DB ?
+K2 DB ?
+TEMP DB ? 
+.CODE
+.STARTUP
+
+	;ENTER USER INPUT
+	LEA SI , K1
+	MOV AH , 01H
+	INT 21H
+	MOV [SI] , AL
+	
+	LEA SI , K2
+	MOV AH , 01H
+	INT 21H
+	MOV [SI] , AL
+	
+	
+	;SAY GIVEN NUMBER IS 57 FOR ATTRIBUTE.
+	MOV AH , K1
+	MOV AL , K2
+	MOV CL , 04H
+	ROL AH , CL
+	; NOW AH HAS 50H
+	OR AH , AL
+	;OR AH , 88H
+	MOV TEMP , AH
+	
+	
+	;OPEN EXISTING FILE TO READ FROM.
+	MOV AH , 3DH
+	MOV AL , 02H
+	LEA DX , fname
+	int 21h
+	
+	;SAVE HANDLE 
+	mov handle , ax
+
+	;FROM START OF FILE , READ N CHARACTERS AND STORE IN LOCATION.
+	
+	MOV AH , 3FH
+	MOV BX , handle
+	MOV CX , 05H
+	LEA DX , RES
+	int 21h
+	
+	;CLOSE FILE
+	MOV AH , 3EH
+	MOV BX , handle
+	int 21h
+	
+
+	;SET GRAPHICS DISPLAY MODE
+	MOV AH , 00H
+	MOV AL , 03H
+	INT 10H
+
+	;INITIALIZE CURSOR POSTION
+	MOV DH , 00
+	MOV DL , 00
+	JMP START
+	
+NEXTLINE:
+	MOV AX , 0050H
+	MOV CNT , AX
+	MOV DL , 00
+	INC DH	
+		
+	
+	
+	JMP START ; dont increment di the first time.
+GO:	
+	INC DL; SET CURSOR POSITION
+START:
+	MOV AH , 02H
+	MOV BH , 00H
+	INT 10H
+
+;WRITE CHAR AT CURSOR POSITION
+	LEA SI , RES
+	MOV AH , 09H
+	MOV AL , [SI]
+	MOV BH , 00H
+	MOV BL , TEMP
+	MOV CX , 01H
+	INT 10H
+	
+	;LOOP FOR NEXT CHAR BY INC DI.
+	INC DI
+	DEC CNT
+	JNZ GO
+	
+	;LOOP FOR NEXT LINE.
+	DEC RCNT
+	JNZ NEXTLINE
+	
+	
+	;BLOCKING FUNCTION WITH %
+	MOV AH , 07H
+BLOCK:
+	INT 21H
+	CMP AL , '%'
+	JNZ BLOCK
+
+	
+	
+	
+
+.EXIT
+END
