@@ -1,0 +1,69 @@
+.model tiny
+.DATA
+fname db 'det.txt' , 0
+nfname db 'avinash.txt' , 0
+STR1 DB 'HELLO'
+handle dw ?
+sid db 'a' , 'b' , 'c'
+line db 0dh , 0ah
+id db 3 dup(?)
+RCNT DB 0A0H
+CNT DW 02DF0H
+.CODE
+.STARTUP
+
+	
+	;SET GRAPHICS DISPLAY MODE
+	MOV AH , 00H
+	MOV AL , 12H
+	INT 10H
+
+	;INITIALIZE PIXEL POSITION.
+	MOV CX , 50
+	MOV DX , 50
+
+NEXTLINE:
+	;REFILL PIXELLINE COUNT. 
+	;REFILL COLUMN POSITION TO START.
+	MOV AX , 0200H
+	MOV CX , 50
+	MOV CNT , AX
+	INC DX
+	INC DX
+	;FILL PIXEL LINE
+	
+	
+	
+	;(FILL 1 PIXEL) !!
+FILPIX:
+
+	MOV AH , 0CH
+	MOV AL , 10001011B
+	INT 10H
+	
+	;(CONTINUE LOOP FOR NEXT PIXEL)
+	INC CX
+	DEC CNT
+	JNZ FILPIX
+	
+	;(CONTINUE LOOP FOR NEXT LINE)
+	DEC RCNT
+	JNZ NEXTLINE
+	
+	
+	
+		
+	
+	;BLOCKING FUNCTION WITH %
+	MOV AH , 07H
+BLOCK:
+	INT 21H
+	CMP AL , '%'
+	JNZ BLOCK
+
+	
+	
+	
+
+.EXIT
+END
