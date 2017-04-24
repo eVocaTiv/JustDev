@@ -1,0 +1,105 @@
+	.model tiny
+.DATA
+fname db 'det.txt' , 0
+nfname db 'avinash.txt' , 0
+STR1 DB 'HELLO'
+handle dw ?
+MAX1 DB 32
+ACT1 DB ? 
+INP1 DB 32 DUP(0)
+sid db 'a' , 'b' , 'c'
+line db 0dh , 0ah
+id db 3 dup(?)
+CNT DB 05H
+.CODE
+.STARTUP
+	
+
+
+	;INPUT STRING THE FROM USER AND STORE IN STR1
+	LEA DX , MAX1
+	MOV AH , 0AH
+	INT 21H
+
+
+	;LOAD DI WITH STRING ADDRESS
+	LEA DI , INP1
+	
+	;SET DISPLAY MODE
+	MOV AH , 00H
+	MOV AL , 03H
+	INT 10H
+	
+	;INITIALIZE CURSOR POSTION
+	MOV DH , 10
+	MOV DL , 30
+	
+
+GO1:	;SET CURSOR POSITION
+	MOV AH , 02H
+	INC DL
+	MOV BH , 00H
+	INT 10H
+	
+	;WRITE CHAR AT CURSOR POSITION
+
+	MOV AH , 09H
+	MOV AL , [DI]
+	MOV BH , 00H
+	MOV BL , 11011111B
+	MOV CX , 01H
+	INT 10H
+	
+	;LOOP FOR NEXT CHAR BY INC DI.
+	INC DI
+	DEC CNT
+	JNZ GO1
+	
+	
+	;-------------------------------------
+	MOV CNT , 05H
+	LEA DI , INP1
+	;---------------------------------
+	;INITIALIZE CURSOR POSTION
+	
+	ADD DH , 00H
+	ADD DL , 05H
+
+GO2:	;SET CURSOR POSITION
+	MOV AH , 02H
+	INC DL
+	MOV BH , 00H
+	INT 10H
+	
+	;WRITE CHAR AT CURSOR POSITION
+
+	MOV AH , 09H
+	MOV AL , [DI]
+	MOV BH , 00H
+	MOV BL , 10011010B
+	MOV CX , 01H
+	INT 10H
+	
+	;LOOP FOR NEXT CHAR BY INC DI.
+	INC DI
+	DEC CNT
+	JNZ GO2
+	
+	
+	
+		
+	
+	
+	;BLOCKING FUNCTION WITH %
+	MOV AH , 07H
+BLOCK:
+	INT 21H
+	CMP AL , '%'
+	JNZ BLOCK
+
+	
+	
+	
+
+.EXIT
+END
