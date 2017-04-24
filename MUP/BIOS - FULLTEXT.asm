@@ -1,0 +1,73 @@
+.model tiny
+.DATA
+fname db 'det.txt' , 0
+nfname db 'avinash.txt' , 0
+STR1 DB 'HELLO'
+handle dw ?
+sid db 'a' , 'b' , 'c'
+line db 0dh , 0ah
+id db 3 dup(?)
+RCNT DB 028H
+CNT DW 0050H
+.CODE
+.STARTUP
+
+	;SET GRAPHICS DISPLAY MODE
+	MOV AH , 00H
+	MOV AL , 03H
+	INT 10H
+
+	;INITIALIZE CURSOR POSTION
+	MOV DH , 00
+	MOV DL , 00
+	JMP START
+	
+	
+NEXTLINE:
+	MOV AX , 0050H
+	MOV CNT , AX
+	MOV DL , 00
+	INC DH	
+		
+	
+	
+	JMP START ; dont increment di the first time.
+GO:	
+	INC DL; SET CURSOR POSITION
+START:
+	MOV AH , 02H
+	MOV BH , 00H
+	INT 10H
+
+;WRITE CHAR AT CURSOR POSITION
+
+	MOV AH , 09H
+	MOV AL , 'A'
+	MOV BH , 00H
+	MOV BL , 10001001B
+	MOV CX , 01H
+	INT 10H
+	
+	;LOOP FOR NEXT CHAR BY INC DI.
+	INC DI
+	DEC CNT
+	JNZ GO
+	
+	;LOOP FOR NEXT LINE.
+	DEC RCNT
+	JNZ NEXTLINE
+	
+	
+	;BLOCKING FUNCTION WITH %
+	MOV AH , 07H
+BLOCK:
+	INT 21H
+	CMP AL , '%'
+	JNZ BLOCK
+
+	
+	
+	
+
+.EXIT
+END
