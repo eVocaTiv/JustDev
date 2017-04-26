@@ -162,12 +162,12 @@ public class Main {
 			b=s.nextInt();
 			c=s.nextInt();
 
-			// UNDIRECTED GRAPH TAKEN.
+			//DIRECTED GRAPH TAKEN.
 
 			adj1[a-1].add(b-1);
 			//adj1[b-1].add(a-1);
-            cost[a-1].add(c);
-            Klist.add(new edges(a-1 , b-1 , c));
+         		cost[a-1].add(c);
+          		Klist.add(new edges(a-1 , b-1 , c));
     
 
 			//adj2[b-1].add(a-1);
