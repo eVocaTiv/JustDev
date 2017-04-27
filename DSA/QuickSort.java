@@ -23,7 +23,7 @@ public class Main {
 		//PRINT SORTED ARRAY.
 
 		for(int i=0 ; i<n ; i++){
-			System.out.println(list.get(i));
+			System.out.print(list.get(i) + " ");
 		}
 
 
@@ -47,23 +47,26 @@ public class Main {
 	}
 	
 	public static int Partition(ArrayList<Integer> list , int low , int high ){
-		int pivot = list.get(high);
+		int actualpivotindex = low;
+		int pivot = list.get(actualpivotindex);
+		Swap(actualpivotindex , high);
 		int l=low-1;
 		int g=low-1;
+		int j= low;
 		// TRAVERSE THE ARRAY USING 'low' , COMPARE WITH 'pivot' and INCREMENT l and g as per need.
 
-		while(low < high){
+		while(j < high){
 			
-			int y=list.get(low);
+			int y=list.get(j);
 			
 			if(y>pivot){
-				low++;
+				j++;
 				g++;
 			}
 			
 			else{
-				Swap(l+1 , low);
-				low++;
+				Swap(l+1 , j);
+				j++;
 				l++;
 				g++;
 			}
