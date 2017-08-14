@@ -3,11 +3,12 @@ import java.util.Scanner;
 
 public class Main {
 
-	static int t , D , diff, n , res;
-	static float x=0;
-	static int xint;
+	static int t , D, n ;
+	static double x=0;
+	static long res , diff;
+	static long xint;
 	private static Scanner s;
-	private static int[] list;
+	private static long[] list;
 
 
 	public static void main(String[] args) {
@@ -19,8 +20,8 @@ public class Main {
 
 			res = 0;
 			n = s.nextInt();
-			list = new int[n];
-			D = s.nextInt();
+			list = new long[n];
+			D = s.nextInt();	
 
 
 
@@ -29,7 +30,7 @@ public class Main {
 				list[i]=s.nextInt();
 
 			x=0;
-			for(int el : list) {
+			for(long el : list) {
 				x+=el;
 			}
 			x/=n;
@@ -38,14 +39,14 @@ public class Main {
 			//System.out.println("hi");
 			//System.out.println(x);
 			//System.out.println(x);
-			if(x==(int)x) {
+			if(x==(long)x) {
 				np = false;
 				xint = (int)x;
 				//System.out.println("X val is " + xint);
 				GetAns();
 			}
-			if(x==(int)x)
-				for(int el : list) {
+			if(x==(long)x)
+				for(long el : list) {
 					if(el!=xint)
 						np = true;
 				}
@@ -53,6 +54,9 @@ public class Main {
 			System.out.println(np == true? -1 : res);
 			np = true;
 
+			
+			//for(int x : list)
+		    //System.out.print(x+ " ");
 		}
 	}
 
@@ -70,6 +74,8 @@ public class Main {
 						res += diff;
 						list[i+D]-=diff;
 					}
+					else
+						return;
 				}
 				else {
 					if(i+D<n) {
@@ -79,6 +85,7 @@ public class Main {
 						list[i+D]+=diff;
 						
 					}
+					else return;
 				}
 		}
 
