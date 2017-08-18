@@ -56,7 +56,7 @@ public class Main {
 
 
 		//PROCESS THE LIST.
-		//N*N...
+		//N..
 		res=0;
 		for(int i=0 ; i<n ; i++) {
 			if(k<list.get(i).price)
