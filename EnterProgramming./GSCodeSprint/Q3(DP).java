@@ -14,6 +14,8 @@ public class Solution {
     	
     	
     	for(int i=1 ; i<=k ; i++)
+    		//DAYS COUNTED FROM 0 TO N-1.
+    		//HENCE FILL ONLY TILL N-1 AND RETURN PROFITMATRIX[K][N-1] AT THE END.
     		for(int j=1 ; j<n ; j++) {
     			int maxi = 0;
     			for(int x=0 ; x<j ; x++) {
