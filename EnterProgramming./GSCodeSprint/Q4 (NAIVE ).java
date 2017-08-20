@@ -61,7 +61,7 @@ public class Solution {
 		}
 		
 		
-		// O(Q*LOGN) .. EXCEEDS TIME LIMIT!
+		// O(Q*(LOGN + N)) .. EXCEEDS TIME LIMIT!
 		for(int a0 = 0; a0 < q; a0++){
 			int _type = in.nextInt();
 			int v = in.nextInt();
