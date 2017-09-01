@@ -77,6 +77,8 @@ public class Main {
 		adj2 = (ArrayList<Integer>[])new ArrayList[n];
 		cost = (ArrayList<Integer>[])new ArrayList[n];
 
+		
+		//INITIALIZE CONTAINERS.
 		for(int i=0 ; i<n ; i++){
 			adj1[i]= new ArrayList<Integer>();
 			adj2[i]= new ArrayList<Integer>();
@@ -91,6 +93,8 @@ public class Main {
 
 		}
 
+		
+		//INPUT VALUES FROM THE USER ACC. TO TYPE OF GRAPH.
 		for(int i=0 ; i<e ; i++){
 			a=s.nextInt();
 			b=s.nextInt();
