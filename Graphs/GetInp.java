@@ -16,6 +16,16 @@ public class Main{
 		GetInp();
 	}
 	
+	public static void DFS(){
+		
+	}
+	
+	public static void Explore(int v){
+		
+	}
+	
+	
+	
 	public static void GetInp(){
 		
 		//GET NO. OF NODES AND EDGES.
@@ -39,6 +49,13 @@ public class Main{
 			adj1[i] = new ArrayList<>();
 			adj2[i] = new ArrayList<>();
 			cost[i] = new ArrayList<>();
+			
+			
+			visited.add(0);
+			pre.add(0);
+			post.add(0);
+			prev.add(-1);
+			
 		}
 		
 		//GET VALUES 
