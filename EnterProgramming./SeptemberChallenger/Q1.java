@@ -5,14 +5,14 @@ public class Main {
 
 	private static Scanner sc;
 	private static int t , n;
-	private static long[]  prefix , suffix;
-	private static int[] a;
+	private static long[]  prefix , suffix , a;
+
 	public static void init(){
 
 
 		n = sc.nextInt();
 
-		a = new int[n];
+		a = new long[n];
 		prefix = new long[n];
 		suffix = new long[n];
 
@@ -36,7 +36,7 @@ public class Main {
 			suffix[i]= suffix[i+1] + a[i];
 		}
 
-		long sum = Integer.MAX_VALUE ;
+		long sum = Long.MAX_VALUE ;
 		int index = 0;
 		for(int i=0 ; i<n ;i++){
 			if(sum>prefix[i] + suffix[i]){
