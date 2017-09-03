@@ -38,7 +38,7 @@ public class Main {
 		//a = new int[n];
 		a = new int[]{ 10 , 22 , 9 ,  33 , 21 , 50  , 41 , 60  , 80};
 		n = 9;
-		l = new int[n+1];
+		l = new int[n];
 		//for(int i=0 ; i<n ; i++)
 		//	a[i]=sc.nextInt();
 
