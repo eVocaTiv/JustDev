@@ -5,14 +5,14 @@ public class Main{
 	static String str , res;
 	static Scanner sc = new Scanner(System.in);
 	static int t, n;
-	static HashMap<Character , Integer> map;
+	static HashMap<String , Integer> map;
 
 	public static String RemoveDupl(){
 		map = new HashMap<>();
 
-		char[] arr = str.toCharArray();
+		String[] arr = str.split(" ");
 
-		for(char c : arr){
+		for(String c : arr){
 			if(map.containsKey(c))
 				map.put(c, map.get(c)+1);
 			else
@@ -22,9 +22,10 @@ public class Main{
 		
 		StringBuilder sb = new StringBuilder();
 
-		for(char c : arr){
+		for(String c : arr){
 			if(map.containsKey(c)){
 				sb.append(c);
+				sb.append(" ");
 				map.remove(c);
 			}
 		}
