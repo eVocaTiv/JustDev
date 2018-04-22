@@ -19,7 +19,7 @@ public class NameSearchDemo
 	public static void main(String aggs[]) throws 
 	IOException
 	{
-		
+
 		int answer;
 		String searchName; // name for searching 
 		String input; // for user choice
@@ -64,29 +64,29 @@ public class NameSearchDemo
 			//convert array to string
 			firstNames.toString();
 		}
-	
+
 		//scroll.setPreferredSize(new Dimension( 500, 1000));
 		JPanel beforePanel = new  JPanel();
 		JOptionPane  beforePane = new JOptionPane();
 		// print the names in the array before sorting 
-      JOptionPane.showMessageDialog(null, "Before sorting, 65 most popular female first names: ", "Output", JOptionPane.INFORMATION_MESSAGE) ; 
-    
-      JList checkBoxesJList = new JList(firstNames);
-      checkBoxesJList.setBounds(10,30,80,600);
-      JScrollPane scroll = new JScrollPane(checkBoxesJList);
-      beforePanel.setLayout(new GridLayout());
+		JOptionPane.showMessageDialog(null, "Before sorting, 65 most popular female first names: ", "Output", JOptionPane.INFORMATION_MESSAGE) ; 
+
+		JList checkBoxesJList = new JList(firstNames);
+		checkBoxesJList.setBounds(10,30,80,600);
+		JScrollPane scroll = new JScrollPane(checkBoxesJList);
+		beforePanel.setLayout(new GridLayout());
 		for(int i = 0; i < 65; i++)
 		{
-			
-		//	scroll.add(new JLabel(firstNames[i]));
-//			JLabel label = new JLabel("Name " + i + " "+ firstNames[i]);
-//			label.setVerticalAlignment(5);
-		//	label.setBounds(100,100, 100 , i*10);
-		//	beforePanel.add(scroll);
-//				JOptionPane.showMessageDialog(null, (firstNames[i]), 
-//					"Before Sorting", JOptionPane.INFORMATION_MESSAGE);
+
+			//	scroll.add(new JLabel(firstNames[i]));
+			//			JLabel label = new JLabel("Name " + i + " "+ firstNames[i]);
+			//			label.setVerticalAlignment(5);
+			//	label.setBounds(100,100, 100 , i*10);
+			//	beforePanel.add(scroll);
+			//				JOptionPane.showMessageDialog(null, (firstNames[i]), 
+			//					"Before Sorting", JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+
 		beforePanel.add(scroll);
 		beforePane.showMessageDialog(scroll, beforePanel);
 		// call to quickSort method 
@@ -96,21 +96,21 @@ public class NameSearchDemo
 		JPanel myPanel = new JPanel();
 		JOptionPane pane = new JOptionPane();
 		JList sortedList = new JList(firstNames);
-	      JScrollPane sortedscroll = new JScrollPane(sortedList);
-	     sortedList.setBounds(10,30,80,600);
+		JScrollPane sortedscroll = new JScrollPane(sortedList);
+		sortedList.setBounds(10,30,80,600);
 		myPanel.add(sortedscroll);
-		
+
 		JOptionPane.showMessageDialog(null, "After sorting, 65 most popular female first names: ");
-//		for(int i = 0; i < 65; i++)
-//		{
-//			
-//			myPanel.add(new JLabel("Name " + i + " "+ firstNames[i]));
-////			JOptionPane.showMessageDialog(null, firstNames[i]);
-//		}
-		
+		//		for(int i = 0; i < 65; i++)
+		//		{
+		//			
+		//			myPanel.add(new JLabel("Name " + i + " "+ firstNames[i]));
+		////			JOptionPane.showMessageDialog(null, firstNames[i]);
+		//		}
+
 		pane.showMessageDialog(sortedscroll , myPanel);
-		
-		
+
+
 		// search about a name 
 		do {
 			/* prompt the user input for the name to 
@@ -122,7 +122,7 @@ public class NameSearchDemo
 
 
 
-			
+
 			// call to binarySearch method
 			int result = ns.binarySearch(firstNames, 
 					searchName);
@@ -134,12 +134,12 @@ public class NameSearchDemo
 				JOptionPane.showMessageDialog(null, searchName + " was found at the position of " + (result + 1));
 
 			// does the user want to search again? 
-//			JOptionPane.showMessageDialog(null, "Do you want to search again? (Y or N): ");
-//			input = keyboard.nextLine();
-	
-		answer = JOptionPane.showConfirmDialog(new JFrame("Confirm Please"), "Yes or no") ;
-			
-			
+			//			JOptionPane.showMessageDialog(null, "Do you want to search again? (Y or N): ");
+			//			input = keyboard.nextLine();
+
+			answer = JOptionPane.showConfirmDialog(new JFrame("Confirm Please"), "Yes or no") ;
+
+
 		} while(answer == JOptionPane.YES_OPTION  ) ;
 	} // end of main method
 } // end of NameSearchDemo class 
