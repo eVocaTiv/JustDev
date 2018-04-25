@@ -12,6 +12,7 @@ public class parser{
 		
 		int throughput = 0;	
 		int sent = 0;
+		int dropped = 0;
 		int recd = 0;
 		int total = 0;
 		int pid = Integer.parseInt(args[0]);
@@ -63,11 +64,19 @@ public class parser{
 			
 			
 			//sent to 1
+			if(linestr[0].contentEquals("d") && (linestr[8].contentEquals("cbr")) && 
+					linestr[6].contentEquals("1")){
+					
+						dropped++;
+					}
 			if(linestr[0].contentEquals("+") && (linestr[8].contentEquals("cbr")) && 
 					linestr[6].contentEquals("1")){
 					
 						sent++;
 					}
+					
+					
+					
 			
 			if(linestr[0].contentEquals("+") && (linestr[8].contentEquals("cbr")) && 
 					 
@@ -82,8 +91,9 @@ public class parser{
 		}
 		//System.out.println("Throughput : " + throughput);
 		System.out.println("SENT : " + sent);
+		System.out.println("DROPPED : " + dropped);
 		System.out.println("RECEIVED : " + recd);
-		System.out.println("PDR : " + (double)recd/sent);
+		System.out.println("PDR : " + (double)recd/(dropped+recd));
 		System.out.println("TOTAL DATA PACKETS : " + total);
 		double t = t2-t1;
 		System.out.println("Packet sent at : " + t1 );
@@ -92,7 +102,7 @@ public class parser{
 		System.out.println("Packet : " + pid + " took time : " + t);
 		System.out.println("Packets between 1 and 2 : " + p);
 		
-		sc.close(); 
+		sc.close();
 		
 	}
 }
