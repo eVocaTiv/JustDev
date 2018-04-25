@@ -46,7 +46,7 @@ $ns duplex-link-op $n3 $n2 orient up-right
 
 #SET QUEUE LIMIT
 
-$ns queue-limit $n1 $n0 1000
+$ns queue-limit $n1 $n0 10000
 
 
 #CREATE TCP AGENTS
@@ -55,7 +55,7 @@ $ns attach-agent $n0 $tcp0
 
 set cbr0 [new Application/Traffic/CBR]
 $cbr0 set packetSize_ 500
-$cbr0 set interval_ 0.003
+$cbr0 set interval_ 0.001
 $cbr0 attach-agent $tcp0
 
 set tcp1 [new Agent/TCP]
@@ -63,7 +63,7 @@ $ns attach-agent $n0 $tcp1
 
 set cbr1 [new Application/Traffic/CBR]
 $cbr1 set packetSize_ 500
-$cbr1 set interval_ 0.003
+$cbr1 set interval_ 0.001
 $cbr1 attach-agent $tcp1
 
 #CREATE SINK AGENTS.
@@ -81,7 +81,12 @@ $ns connect $tcp1 $null3
 
 $ns at 0.5 "$cbr0 start"
 $ns at 0.5 "$cbr1 start"
-$ns rtmodel-at 1.5 down $n1 $n2
+$ns at 1.0 "$cbr1 set rate_ 1mbps"
+#$ns at 1.0 "$cbr0 set rate_ 1000.0Mb"
+
+
+#$ns rtmodel-at 1.5 down $n1 $n2
+#$ns rtmodel-at 2.0 up   $n1 $n2
 $ns at 4.5 "$cbr0 stop"
 $ns at 4.5 "$cbr1 stop"
 
