@@ -17,7 +17,7 @@ public class parser{
 		int pid = Integer.parseInt(args[0]);
 		double t1=0;
 		double t2=0;
-		
+		int p=0;
 		
 		
 		
@@ -26,6 +26,15 @@ public class parser{
 			String line = sc.nextLine();
 			String[] linestr = line.split(" ");
 
+
+
+				//CALCULATE NUMBER OF PACKETS SENT BETWEEN 1 AND 2.
+			
+				if(linestr[0].contentEquals("-") && linestr[8].contentEquals("cbr")){
+						double time = Double.parseDouble(linestr[2]);
+						if(time > 1.0 && time < 2.0)
+						p++;
+					}
 
 
 				//CALCULATE TIME TAKEN BY PACKET WITH ID = 0.
@@ -79,8 +88,10 @@ public class parser{
 		double t = t2-t1;
 		System.out.println("Packet sent at : " + t1 );
 		System.out.println("Packet recd at : " + t2 );
-		
+
 		System.out.println("Packet : " + pid + " took time : " + t);
+		System.out.println("Packets between 1 and 2 : " + p);
+		
 		sc.close();
 		
 	}
