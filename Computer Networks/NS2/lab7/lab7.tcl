@@ -1,8 +1,9 @@
+
 set ns [new Simulator]
 
 #CREATE HANDLE FOR TRACE FILE.
 
-set nf [open example1trace.nam w]
+set nf [open out.nam w]
 $ns namtrace-all $nf
 
 
@@ -11,7 +12,7 @@ proc finish {} {
 	global ns nf
 	$ns flush-trace
 	close $nf
-	exec nam example1trace.nam &
+	exec nam out.nam &
 	exit 0
 }
 
@@ -28,9 +29,15 @@ $ns duplex-link $n0 $n1 1Mb 10ms DropTail
 $ns duplex-link $n1 $n2 1Mb 10ms DropTail
 $ns duplex-link $n0 $n2 1Mb 10ms DropTail
 
+$ns queue-limit $n0 $n1 10
+$ns queue-limit $n2 $n1 10
+$ns queue-limit $n0 $n2 10
 
 #CREATE UDP AGENTS AND LINK THEM TO NODES.
 set udp0 [new Agent/UDP]
+set udp1 [new Agent/UDP]
+set udp2 [new Agent/UDP]
+
 $ns attach-agent $n0 $udp0
 $ns attach-agent $n1 $udp1
 $ns attach-agent $n2 $udp2
@@ -52,10 +59,10 @@ $cbr1 attach-agent $udp1
 
 #CREATE CBR TRAFFIC SOURCE AND ATTACH IT TO NODES.
 
-set cbr1 [new Application/Traffic/CBR]
-$cbr1 set packetSize_ 500
-$cbr1 set interval_ 0.005
-$cbr1 attach-agent $udp1
+set cbr2 [new Application/Traffic/CBR]
+$cbr2 set packetSize_ 500
+$cbr2 set interval_ 0.005
+$cbr2 attach-agent $udp2
 
 #CREATE A TRAFFIC SINK.
 set null0 [new Agent/Null]
@@ -69,15 +76,22 @@ $ns attach-agent $n2 $null2
 
 #CONNECT 2 AGENTS.
 
-$ns connect $udp0 $null0
-$ns connect $udp1 $null1
-$ns connect $udp2 $null2
+$ns connect $udp0 $null1
+$ns connect $udp1 $null2
+$ns connect $udp2 $null0
 
 
 #TELL CBR AGENT WHEN TO START AND STOP SENDING.
 $ns at 0.5 "$cbr0 start"
 $ns at 0.5 "$cbr1 start"
 $ns at 0.5 "$cbr2 start"
+
+
+$ns at 1.5 "$cbr0 set rate_ 0.5Mb"
+$ns at 2.5 "$cbr0 set rate_ 1.0Mb"
+$ns at 2.5 "$cbr0 set rate_ 1.5Mb"
+#$ns at 2.5 "$cbr0 set rate_ 4.0Mb"
+
 
 $ns at 4.5 "$cbr0 stop"
 $ns at 4.5 "$cbr1 stop"
