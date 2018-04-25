@@ -92,7 +92,7 @@ public class parser{
 		System.out.println("Packet : " + pid + " took time : " + t);
 		System.out.println("Packets between 1 and 2 : " + p);
 		
-		sc.close();
+		sc.close(); 
 		
 	}
 }
