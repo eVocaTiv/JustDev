@@ -85,8 +85,8 @@ public class Main {
 			Explore(w);
 
 			}
-			PostVisit(v);
 		}
+		PostVisit(v);
 	}
 
 
