@@ -1,10 +1,12 @@
+import java.sql.Time;
 import java.util.Stack;
 
 /*  N Queen Problem using Stacks & backtracking */
 public class NQueens
 { 
 	static Stack<Integer> s ;
-    static final int N = 4;
+	static int total = 0;
+    static final int N = 8;
     // to keep track of current state of the NxN chessboard.
     // 1 represents Queen at a spot.
     // 0 means No Queen placed at that spot.
@@ -74,9 +76,8 @@ public class NQueens
     	
     	/* base case: If all queens are placed i.e success is true
             or stack is empty. */
-    
-    	while(!success || s.isEmpty()) {
-    		
+       Long ctime = System.currentTimeMillis();
+    	while(true) {
     		// current row i.e x
     		// will be equal to the latest index of stack
     		// which is just the size of stack.
@@ -89,7 +90,9 @@ public class NQueens
     		
     		// all queens placed.
     		if (x == N) {
+    			total++;
     			printSolution(s);
+    			System.out.println();
     			success = true;
     			
     			
@@ -106,12 +109,12 @@ public class NQueens
     			// i.e lastcol + 1.
     			// be sure to update stack and the board[][].
     			//Something on these lines
-//    			int lastcol = s.pop();
-//    			x--;
+    			int lastcol = s.pop();
+    			x--;
 //    			System.out.println(lastcol);
-//    			board[x][lastcol] = 0;
-//    			i = lastcol + 1;
-//    			continue;
+    			board[x][lastcol] = 0;
+    			i = lastcol + 1;
+    			continue;
     		}
     		
     		// checks all possible column values for current row
@@ -138,6 +141,7 @@ public class NQueens
     				// update board and stack.
     				// then backtrack to previous row.
     				int lastcol = s.pop();
+//    				System.out.println(board[x-1][lastcol]);
     				board[x-1][lastcol] = 0; 
     				x--;
     				i = lastcol+1;
@@ -174,5 +178,6 @@ public class NQueens
     { 
         NQueens Queen = new NQueens(); 
         Queen.solveNQ(N); 
+        System.out.println("Total possible combinations are :" + total);
     } 
 } 
