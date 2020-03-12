@@ -65,7 +65,7 @@ class Main {
 		int lowerSize = lower.size();
 		int upperSize = upper.size();
 
-		// make sure lower is always >= upper.
+		// make sure lower is always >= upper with max diff 1.
 		if((upperSize-lowerSize) > 0) {
 			lower.add(upper.poll());
 		} else
